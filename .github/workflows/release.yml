@@ -12,7 +12,12 @@ jobs:
   release-local:
     name: release-local
     runs-on: ubuntu-latest
-    if: ${{ (github.event_name == 'pull_request' && github.base_ref == 'develop') || (github.event_name == 'push') && !contains(github.event.pull_request.head.ref, 'release/' || 'hotfix/') }}
+#    if: ${{ github.ref == 'refs/heads/hotfix/*' && !contains(github.event.pull_request.head.ref, 'release/') }}
+#    if: ${{ (github.event_name == 'pull_request' && github.base_ref == 'develop') || (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/hotfix/') && !startsWith(github.ref, 'refs/heads/release/')) && !contains(github.event.pull_request.head.ref, 'release/' || 'hotfix/') }}
+
+
+    # Se ejecuta si la PR es hacia develop y no proviene de una rama de release u hotfix
+    if: ${{ !contains(github.event.pull_request.head.ref, 'release/' || 'hotfix/') }}
     environment: local
     steps:
       - name: Checkout Repository
@@ -43,7 +48,12 @@ jobs:
     name: release-dev
     runs-on: ubuntu-latest
     needs: release-local
-    if: (github.event_name == 'push' && success() && !contains(github.event.pull_request.head.ref, 'release/' || 'hotfix/'))
+#    if: (github.event_name == 'push' && success() && !contains(github.event.pull_request.head.ref, 'release/' || 'hotfix/'))
+
+
+    # Se ejecuta si el evento es de tipo 'push' y el 'needs' se ejecutó correctamente.
+    # Esta job debería ejecutarse en las ramas de release y hotfix.
+    if: ${{ (github.event_name == 'push' && success()) }}
     environment: dev
     steps:
       - name: Checkout Repository
@@ -74,7 +84,12 @@ jobs:
     name: release-test
     runs-on: ubuntu-latest
     needs: release-dev
-    if: (github.event_name == 'push' && success() && !contains(github.event.pull_request.head.ref, 'release/' || 'hotfix/'))
+#    if: (github.event_name == 'push' && success() && !contains(github.event.pull_request.head.ref, 'release/' || 'hotfix/'))
+
+
+    # Se ejecuta si el evento es de tipo 'push' y el 'needs' se ejecutó correctamente.
+    # Esta job debería ejecutarse en las ramas de release y hotfix.
+    if: ${{ (github.event_name == 'push' && success()) }}
     environment: test
     steps:
       - name: Checkout Repository
@@ -105,7 +120,12 @@ jobs:
     name: release-prod
     runs-on: ubuntu-latest
     needs: release-test
-    if: (github.event_name == 'push' && success() && !contains(github.event.pull_request.head.ref, 'release/' || 'hotfix/'))
+#    if: (github.event_name == 'push' && success() && !contains(github.event.pull_request.head.ref, 'release/' || 'hotfix/'))
+
+
+    # Se ejecuta si el evento es de tipo 'push' y el 'needs' se ejecutó correctamente.
+    # Esta job debería ejecutarse en las ramas de release y hotfix.
+    if: ${{ (github.event_name == 'push' && success()) }}
     environment: prod
     steps:
       - name: Checkout Repository
