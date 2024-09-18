@@ -22,7 +22,3 @@
 
 # Introduction
 Proyecto de prueba para definición y PoCs de DevSecOps.
-
-# Getting Started
-
-## Prerequisites
