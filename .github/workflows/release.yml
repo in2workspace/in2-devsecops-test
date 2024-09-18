@@ -12,11 +12,9 @@ jobs:
   release-local:
     name: release-local
     runs-on: ubuntu-latest
-
     # Se ejecuta si la PR es hacia develop y no proviene de una rama de release u hotfix.
     # Este job no debe ejecutarse como push en cualquier rama release, pero sí en las ramas de hotfix.
     if: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'develop' && !contains(github.event.pull_request.head.ref, 'release/' || 'hotfix/') }}
-
     environment: local
     steps:
       - name: Checkout Repository
@@ -84,7 +82,7 @@ jobs:
     # Este job se ejecuta si el evento es un 'push' y ocurre en las ramas 'release' y 'hotfix'.
     # Este job depende del resultado del job anterior, 'release-dev'.
     # Este job jamás se ejecutará por una 'pull_request'.
-    if: ${{ github.event_name == 'push' && success() && (startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/hotfix/')) }}
+    if: ${{ github.event_name == 'push' && (startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/hotfix/') && success()) }}
     environment: test
     steps:
       - name: Checkout Repository
@@ -118,7 +116,7 @@ jobs:
     # Este job se ejecuta si el evento es un 'push' y ocurre en las ramas 'release' y 'hotfix'.
     # Este job depende del resultado del job anterior, 'release-test'.
     # Este job jamás se ejecutará por una 'pull_request'.
-    if: ${{ github.event_name == 'push' && success() && (startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/hotfix/')) }}
+    if: ${{ github.event_name == 'push' && (startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/hotfix/') && success()) }}
     environment: prod
     steps:
       - name: Checkout Repository
