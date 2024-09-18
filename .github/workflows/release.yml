@@ -17,7 +17,7 @@ jobs:
 
 
     # Se ejecuta si la PR es hacia develop y no proviene de una rama de release u hotfix
-    if: ${{ !contains(github.event.pull_request.head.ref, 'release/' || 'hotfix/') && !startsWith(github.ref, 'refs/heads/release/') }}
+    if: ${{ !contains(github.event.pull_request.head.ref, 'release/' || 'hotfix/') && (github.event_name == 'push' && !startsWith(github.ref, 'refs/heads/release/')) }}
     environment: local
     steps:
       - name: Checkout Repository
