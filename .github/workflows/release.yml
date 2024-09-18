@@ -17,7 +17,7 @@ jobs:
 
 
     # Se ejecuta si la PR es hacia develop y no proviene de una rama de release u hotfix
-    if: !contains(github.event.pull_request.head.ref, 'release/' || 'hotfix/')
+    if: ${{ !contains(github.event.pull_request.head.ref, 'release/' || 'hotfix/') }}
     environment: local
     steps:
       - name: Checkout Repository
@@ -53,7 +53,7 @@ jobs:
 
     # Se ejecuta si el evento es de tipo 'push' y el 'needs' se ejecutó correctamente.
     # Esta job debería ejecutarse en las ramas de release y hotfix.
-    if: (github.event_name == 'push' && success())
+    if: ${{ (github.event_name == 'push' && success()) }}
     environment: dev
     steps:
       - name: Checkout Repository
@@ -89,7 +89,7 @@ jobs:
 
     # Se ejecuta si el evento es de tipo 'push' y el 'needs' se ejecutó correctamente.
     # Esta job debería ejecutarse en las ramas de release y hotfix.
-    if: (github.event_name == 'push' && success())
+    if: ${{ (github.event_name == 'push' && success()) }}
     environment: test
     steps:
       - name: Checkout Repository
@@ -125,7 +125,7 @@ jobs:
 
     # Se ejecuta si el evento es de tipo 'push' y el 'needs' se ejecutó correctamente.
     # Esta job debería ejecutarse en las ramas de release y hotfix.
-    if: (github.event_name == 'push' && success())
+    if: ${{ (github.event_name == 'push' && success()) }}
     environment: prod
     steps:
       - name: Checkout Repository
