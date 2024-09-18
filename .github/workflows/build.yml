@@ -6,6 +6,8 @@ on:
       - release/*
       - hotfix/*
   pull_request:
+    branches:
+      - develop
     types: [opened, synchronize, reopened]
 jobs:
   build:
