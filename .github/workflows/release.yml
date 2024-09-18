@@ -53,7 +53,7 @@ jobs:
 
     # Se ejecuta si el evento es de tipo 'push' y el 'needs' se ejecutó correctamente.
     # Esta job debería ejecutarse en las ramas de release y hotfix.
-    if: ${{ (github.event_name == 'push' && success()) }}
+    if: ${{ (github.event_name == 'push') }}
     environment: dev
     steps:
       - name: Checkout Repository
