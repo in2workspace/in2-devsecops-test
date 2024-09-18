@@ -14,6 +14,9 @@ jobs:
     runs-on: ubuntu-latest
 #    if: ${{ github.ref == 'refs/heads/hotfix/*' && !contains(github.event.pull_request.head.ref, 'release/') }}
 #    if: ${{ (github.event_name == 'pull_request' && github.base_ref == 'develop') || (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/hotfix/') && !startsWith(github.ref, 'refs/heads/release/')) && !contains(github.event.pull_request.head.ref, 'release/' || 'hotfix/') }}
+
+    # Se ejecuta si la PR es hacia develop y no proviene de una rama de release u hotfix
+    if: ${{ !contains(github.event.pull_request.head.ref, 'release/' || 'hotfix/')}}
     environment: local
     steps:
       - name: Checkout Repository
